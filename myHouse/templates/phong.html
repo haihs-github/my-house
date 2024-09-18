@@ -2,15 +2,23 @@
 {% block content %}
 <div class="phong_name">Phòng {{phong.id}}</div>
 <div class="phong_name">
-	<form action="{% url 'phong' id=phong.id %}" method="post"></form>
-	{% csrf_token %}
-	<label>năm</label>
-	<select name="year">
-		<option value="2023">2023</option>
-		<option value="2024">2024</option>
-		<option value="2025">2025</option>
-		<option value="2026">2026</option>
-	</select>
+	<form action="{% url 'phong' id=phong.id %}" method="post">
+		{% csrf_token %}
+		<label>năm</label>
+		<select name="nam">
+			{% if nam == '/' %}
+			<option value="/" style="display:none">Tất cả</option>
+			{% else %}
+			<option value="{{nam}}" style="display:none">{{nam}}</option>
+			<option value="/">Tất cả</option>
+			{% endif %}
+			{% for x in nams %}
+			{% if x != nam %}
+			<option value="{{x}}">{{x}}</option>
+			{% endif %}
+			{% endfor %}
+		</select>
+		<button type="submit" class="btn btn-primary filter-btn">Lọc</button>
 	</form>
 </div>
 
