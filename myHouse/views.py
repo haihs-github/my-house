@@ -34,6 +34,10 @@ def phong(request, id):
 	thang = int(datetime.now().month)
 	nam = int(datetime.now().year)
 	nams = []
+	tong = 0
+	for x in congnos:
+		if x.trangthai == False:
+			tong = tong + x.tong
 	for x in congnos:
 		if getnam(x.thang) not in nams:
 			nams.append(getnam(x.thang))
@@ -41,6 +45,9 @@ def phong(request, id):
 	if request.method == "POST":
 		newnam = request.POST['nam']
 		newcongnos = getcongnobythangnam(congnos, newnam)
+		for x in newcongnos:
+			if x.trangthai == False:
+				tong = tong + x.tong
 		context = {
 			'phong': phong,
 			'congnos': newcongnos,
@@ -48,6 +55,7 @@ def phong(request, id):
 			'thang': thang,
 			'nam': newnam,
 			'nams': nams,
+			'tong': tong,
 		}		
 		return render(request, 'phong.html', context)
 	context = {
@@ -57,5 +65,6 @@ def phong(request, id):
 		'thang': thang,
 		'nam': nam,
 		'nams': nams,
+		'tong': tong,
 	}
 	return render(request, 'phong.html', context)
