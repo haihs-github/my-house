@@ -1,0 +1,43 @@
+{% extends 'index.html' %}
+{% block content %}
+<div class="phong_name">Phòng {{phong.id}}</div>
+<div class="phong_name">
+	<form action="{% url 'phong' id=phong.id %}" method="post"></form>
+	{% csrf_token %}
+	<label>năm</label>
+	<select name="year">
+		<option value="2023">2023</option>
+		<option value="2024">2024</option>
+		<option value="2025">2025</option>
+		<option value="2026">2026</option>
+	</select>
+	</form>
+</div>
+
+<table class="table">
+	<thead>
+		<tr>
+			<th class="text-align-center" scope=" col">Tháng</th>
+			<th class="text-align-center" scope="col">Tiền điện</th>
+			<th class="text-align-center" scope="col">Tiền nước</th>
+			<th class="text-align-center" scope="col">Tổng</th>
+			<th class="text-align-center" scope="col">Trạng thái</th>
+			<th class="text-align-center" scope="col">chỉnh sửa</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for x in congnos %}
+		<tr></tr>
+		<th class="text-align-center" scope="row">{{x.thang}}</th>
+		<td class="text-align-center">{{x.tiennuoc}} đ</td>
+		<td class="text-align-center">{{x.tiendien}} đ</td>
+		<td class="text-align-center">{{x.tong}} đ</td>
+		<td class="text-align-center" style="color: green">đã nộp</td>
+		<td class="text-align-center">
+			<a href="" class=""><i class="fa-regular fa-pen-to-square" style="color: #FFD43B;"></i></a>
+		</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% endblock %}

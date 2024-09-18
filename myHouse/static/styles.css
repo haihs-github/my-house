@@ -2,3 +2,13 @@
 	font-size: x-large;
 	margin: auto 0;
 }
+
+.phong_name {
+	display: inline-block;
+	padding: 5px 10px;
+	font-weight: 700;
+}
+
+.text-align-center {
+	text-align: center !important;
+}
