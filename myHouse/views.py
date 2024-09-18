@@ -29,7 +29,7 @@ def getnam(thang):
 
 def phong(request, id):
 	phong = Phong.objects.get(id=id)
-	congnos = Congno.objects.filter(phong=phong).order_by('-thang')
+	congnos = Congno.objects.filter(phong=phong).order_by("-id")
 	thangnam = getthangnam()
 	thang = int(datetime.now().month)
 	nam = int(datetime.now().year)

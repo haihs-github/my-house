@@ -30,20 +30,28 @@
 			<th class="text-align-center" scope="col">Tiền nước</th>
 			<th class="text-align-center" scope="col">Tổng</th>
 			<th class="text-align-center" scope="col">Trạng thái</th>
+			<th class="text-align-center" scope="col">Chi tiết</th>
 			<th class="text-align-center" scope="col">chỉnh sửa</th>
 		</tr>
 	</thead>
 	<tbody>
 		{% for x in congnos %}
-		<tr></tr>
-		<th class="text-align-center" scope="row">{{x.thang}}</th>
-		<td class="text-align-center">{{x.tiennuoc}} đ</td>
-		<td class="text-align-center">{{x.tiendien}} đ</td>
-		<td class="text-align-center">{{x.tong}} đ</td>
-		<td class="text-align-center" style="color: green">đã nộp</td>
-		<td class="text-align-center">
-			<a href="" class=""><i class="fa-regular fa-pen-to-square" style="color: #FFD43B;"></i></a>
-		</td>
+		<tr>
+			<th class="text-align-center" scope="row">{{x.thang}}</th>
+			<td class="text-align-center">{{x.tiennuoc}} đ</td>
+			<td class="text-align-center">{{x.tiendien}} đ</td>
+			<td class="text-align-center">{{x.tong}} đ</td>
+			{% if x.trangthai == True %}
+			<td class="text-align-center" style="color: green">đã đóng</td>
+			{% else %}
+			<td class="text-align-center" style="color: red">chưa đóng</td>
+			{% endif %}
+			<td class="text-align-center" style="color: green">
+				<a href="#" class="">xem chi tiết</a>
+			</td>
+			<td class="text-align-center">
+				<a href="" class=""><i class="fa-regular fa-pen-to-square" style="color: #FFD43B;"></i></a>
+			</td>
 		</tr>
 		{% endfor %}
 	</tbody>
