@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Trang Đăng Nhập</title>
+	<style>
+		/* Đặt chiều cao của body và html để căn giữa */
+		html,
+		body {
+			height: 100%;
+			margin: 0;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			background-color: #f0f0f0;
+			font-family: Arial, sans-serif;
+		}
+
+		/* Style cho khung đăng nhập */
+		.login-container {
+			background-color: white;
+			padding: 20px;
+			border-radius: 10px;
+			box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+			width: 300px;
+			text-align: center;
+		}
+
+		/* Style cho các input và button */
+		input[type="text"],
+		input[type="password"] {
+			width: 93%;
+			padding: 10px;
+			margin: 10px 0;
+			border: 1px solid #ccc;
+			border-radius: 5px;
+		}
+
+		button {
+			width: 100%;
+			padding: 10px;
+			background-color: #28a745;
+			color: white;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+			font-size: 16px;
+		}
+
+		button:hover {
+			background-color: #218838;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="login-container">
+		<h2>Đăng Nhập</h2>
+		<form action="{% url 'phong' id=phong.id %}" method="POST">
+			<div><input type="text" name="name" placeholder="Tên đăng nhập" required></div>
+			<div><input type="password" name="password" placeholder="Mật khẩu" required></div>
+			<button type="submit">Đăng nhập</button>
+		</form>
+		<div><button class="btn btn-primary more-div" onclick="history.back(-1)" style="margin-top: 10px">quay
+				lại</button></div>
+	</div>
+</body>
+
+</html>

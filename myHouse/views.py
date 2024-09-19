@@ -28,7 +28,10 @@ def getnam(thang):
 
 
 def phong(request, id):
+	request.session.flush()
 	phong = Phong.objects.get(id=id)
+	phongs = Phong.objects.all()
+	print(phongs)
 	congnos = Congno.objects.filter(phong=phong).order_by("-id")
 	thangnam = getthangnam()
 	thang = int(datetime.now().month)
@@ -50,6 +53,7 @@ def phong(request, id):
 				tong = tong + x.tong
 		context = {
 			'phong': phong,
+			'phongs': phongs,
 			'congnos': newcongnos,
 			'thangnam': thangnam,
 			'thang': thang,
@@ -57,10 +61,10 @@ def phong(request, id):
 			'nams': nams,
 			'tong': tong,
 		}
-		print(context)
 		return render(request, 'phong.html', context)
 	context = {
 		'phong': phong,
+		'phongs': phongs,
 		'congnos': congnos,
 		'thangnam': thangnam,
 		'thang': thang,
@@ -68,10 +72,9 @@ def phong(request, id):
 		'nams': nams,
 		'tong': tong,
 	}
-	print(context)
 	return render(request, 'phong.html', context)
 
-def congnothang(request, id, thang, nam):
+def congnothangchitiet(request, id, thang, nam):
 	phong = Phong.objects.get(id=id)
 	thangnam = thang + "/" + nam
 	congno = Congno.objects.get(phong=phong, thang=thangnam)
@@ -84,4 +87,21 @@ def congnothang(request, id, thang, nam):
 		"tongsodien": tongsodien,
 		"tongsonuoc": tongsonuoc,
 	}
-	return render(request, 'congnothang.html', context)
+	return render(request, 'congnothangchitiet.html', context)
+
+def tinhtien(request):
+	return render(request, 'tinhtine.html')
+
+def phongcheck(request, id, id2):
+	congno = Congno.objects.get(id=id2)
+	if request.method == "POST":
+		if form.is_valid():
+			name = request.POST['name']
+			password = request.POST['password']
+			if name == "admin" and password == "admin":
+				if congno.trangthai == True:
+					congno.trangthai = False
+				else:
+					congno.trangthai = True
+	congno.save()
+	return render(request, 'check.html')
