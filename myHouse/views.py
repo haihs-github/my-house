@@ -10,7 +10,36 @@ def index(request):
 	return redirect('/home')
 
 def home(request):
-	return render(request, 'home.html')
+	phong1 = Phong.objects.get(id=1)
+	congnosphong1 = Congno.objects.filter(phong=phong1)
+	no1=0
+	for x in congnosphong1:
+		if x.trangthai == False:
+			no1 += x.tong
+	phong2 = Phong.objects.get(id=2)
+	congnosphong2 = Congno.objects.filter(phong=phong2)
+	no2=0
+	for x in congnosphong2:
+		if x.trangthai == False:
+			no2+=x.tong
+	phong3 = Phong.objects.get(id=3)
+	congnosphong3 = Congno.objects.filter(phong=phong3)
+	no3=0
+	for x in congnosphong3:
+		if x.trangthai == False:
+			no3+=x.tong
+	context = {
+		'phong1': phong1,
+		'phong2': phong2,
+		'phong3': phong3,
+		'congnosphong1': congnosphong1,
+		'congnosphong2': congnosphong2,
+		'congnosphong3': congnosphong3,
+		'no1': no1,
+		'no2': no2,
+		'no3': no3,
+	}
+	return render(request, 'home.html', context)
 
 def getthangnam():
 	thang = datetime.now().month
