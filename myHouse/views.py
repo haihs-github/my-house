@@ -56,7 +56,8 @@ def phong(request, id):
 			'nam': newnam,
 			'nams': nams,
 			'tong': tong,
-		}		
+		}
+		print(context)
 		return render(request, 'phong.html', context)
 	context = {
 		'phong': phong,
@@ -67,4 +68,20 @@ def phong(request, id):
 		'nams': nams,
 		'tong': tong,
 	}
+	print(context)
 	return render(request, 'phong.html', context)
+
+def congnothang(request, id, thang, nam):
+	phong = Phong.objects.get(id=id)
+	thangnam = thang + "/" + nam
+	congno = Congno.objects.get(phong=phong, thang=thangnam)
+	tongsodien = phong.sodienthangnay - phong.sodienthangtruoc
+	tongsonuoc = phong.sonuocthangnay - phong.sonuocthangtruoc
+	context = {
+		"phong": phong,
+		"thangnam": thangnam,
+		"congno": congno,
+		"tongsodien": tongsodien,
+		"tongsonuoc": tongsonuoc,
+	}
+	return render(request, 'congnothang.html', context)

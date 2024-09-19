@@ -1,0 +1,54 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<div class="phong_name">Phòng {{phong.id}}</div>
+<div class="phong_name">tháng: {{thangnam}}</div>
+{% if congno.trangthai == True %}
+<div class="phong_name" style="color: green">đã đóng</div>
+{% else %}
+<div class="phong_name" style="color: red">chưa đóng</div>
+{% endif %}
+
+<table class="table">
+	<thead>
+		<tr>
+			<th class="text-align-center" scope="col">Tiền</th>
+			<th class="text-align-center" scope="col">Số của tháng trước</th>
+			<th class="text-align-center" scope="col">Số của tháng này</th>
+			<th class="text-align-center" scope="col">Tổng số</th>
+			<th class="text-align-center" scope="col">đơn giá/số(khối)</th>
+			<th class="text-align-center" scope="col">thành tiền</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<th class="text-align-center" scope="row">Điện</th>
+			<td class="text-align-center">{{phong.sodienthangtruoc}}</td>
+			<td class="text-align-center">{{phong.sodienthangnay}}</td>
+			<td class="text-align-center">{{tongsodien}} số</td>
+			<td class="text-align-center"><span>3.000đ(&lt;150)</span> <br>
+				<span>3.500đ(&gt;=150)</span>
+			</td>
+			<td class="text-align-center">{{congno.tiendien}}đ</td>
+		</tr>
+		<tr>
+			<th class="text-align-center" scope="row">Nước</th>
+			<td class="text-align-center">{{phong.sonuocthangtruoc}}</td>
+			<td class="text-align-center">{{phong.sonuocthangnay}}</td>
+			<td class="text-align-center">{{tongsonuoc}} khối</td>
+			<td class="text-align-center">18.000đ</td>
+			<td class="text-align-center">{{congno.tiennuoc}}đ</td>
+		</tr>
+		<tr style="border-top: 2px solid black">
+			<th class="text-align-center" scope="row">Tổng</th>
+			<td class="text-align-center"></td>
+			<td class="text-align-center"></td>
+			<td class="text-align-center"></td>
+			<td class="text-align-center"></td>
+			<td class="text-align-center">{{congno.tong}} đ</td>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<div><a href="#" class="btn btn-primary more-div">Xem thêm <i class="fa-solid fa-angle-right"></i></a></div>
+{% endblock %}
