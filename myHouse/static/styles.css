@@ -26,3 +26,9 @@
 .more-div {
 	width: 100%;
 }
+
+.phong-title {
+	line-height: 37px;
+	font-size: larger;
+	font-weight: 600;
+}

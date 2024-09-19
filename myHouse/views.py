@@ -125,10 +125,6 @@ def phong(request, id):
 			}
 	return render(request, 'phong.html', context)
 
-
-		
-
-
 def getthangtruoc(thang, nam):
 	thangtruoc = 0
 	namtruoc = 0
@@ -141,7 +137,7 @@ def getthangtruoc(thang, nam):
 	return str(thangtruoc) + "/" + str(namtruoc)
 
 def tiendiennuoc(congnothangnay, congnothangtruoc):
-	sodien = congnothangnay.sodien - congnothangtruoc.sodien
+	sodien = int(congnothangnay.sodien) - int(congnothangtruoc.sodien)
 	print(congnothangnay.sodien)
 	print(congnothangtruoc.sodien)
 	print(sodien)
@@ -176,18 +172,41 @@ def congnothangchitiet(request, id, thang, nam):
 	return render(request, 'congnothangchitiet.html', context)
 
 def tinhtien(request):
-	return render(request, 'tinhtine.html')
+	thangnay = datetime.now().month
+	namnay = datetime.now().year
+	thang = str(thangnay) + "/" + str(namnay)
+	if request.method == "POST":
+		thangform = request.POST['thang']
+		sodienp1 = int(request.POST['sodienp1'])
+		sonuocp1 = int(request.POST['sonuocp1'])
+		phong1 = Phong.objects.get(id=1)
+		congno1 = Congno(thang=thangform, sodien=sodienp1, sonuoc=sonuocp1, tiennuoc=0, tiendien=0, trangthai=False, phong=phong1)
+		congno1.save()
+		congno1thangtruoc = Congno.objects.get(phong=phong1, thang=getthangtruoc(thangnay, namnay))
+		tiendiennuoc(congno1, congno1thangtruoc)
+
+		sodienp2 = int(request.POST['sodienp2'])
+		sonuocp2 = int(request.POST['sonuocp2'])
+		phong2 = Phong.objects.get(id=2)
+		congno2 = Congno(thang=thangform, sodien=sodienp2, sonuoc=sonuocp2, tiennuoc=0, tiendien=0, trangthai=False, phong=phong2)
+		congno2.save()
+		congno2thangtruoc = Congno.objects.get(phong=phong2, thang=getthangtruoc(thangnay, namnay))
+		tiendiennuoc(congno2, congno2thangtruoc)
+
+		sodienp3 = int(request.POST['sodienp3'])
+		sonuocp3 = int(request.POST['sonuocp3'])
+		phong3 = Phong.objects.get(id=3)
+		congno3 = Congno(thang=thangform, sodien=sodienp3, sonuoc=sonuocp3, tiennuoc=0, tiendien=0, trangthai=False, phong=phong3)
+		congno3.save()
+		congno3thangtruoc = Congno.objects.get(phong=phong3, thang=getthangtruoc(thangnay, namnay))
+		tiendiennuoc(congno3, congno3thangtruoc)
+		return redirect('home')
+	context = {
+		'thang': thang,
+
+	}
+	return render(request, 'tinhtien.html', context)
 
 def phongcheck(request, id, id2):
-	congno = Congno.objects.get(id=id2)
-	if request.method == "POST":
-		if form.is_valid():
-			name = request.POST['name']
-			password = request.POST['password']
-			if name == "admin" and password == "admin":
-				if congno.trangthai == True:
-					congno.trangthai = False
-				else:
-					congno.trangthai = True
-	congno.save()
+	
 	return render(request, 'check.html')

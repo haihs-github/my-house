@@ -7,6 +7,5 @@ urlpatterns = [
 	path('home/congno/phong/<int:id>/', views.phong, name='phong'),
 	path('home/congno/phong/<int:id>/check/<int:id2>', views.phongcheck, name='phongcheck'),
 	path('home/congno/phong/<int:id>/<str:thang>/<str:nam>', views.congnothangchitiet , name='congnothangchitiet'),
-	# path('home/congno/phong/<int:id>/<str:thang>/<str:nam>/edit', views.congnothangchitiet , name='congnothangchitiet'),
-	path('tinhtien', views.tinhtien, name='tinhtien'),
+	path('tinhtien/', views.tinhtien, name='tinhtien'),
 ]
