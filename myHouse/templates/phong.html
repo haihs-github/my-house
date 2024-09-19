@@ -44,8 +44,8 @@
 		{% for x in congnos %}
 		<tr>
 			<th class="text-align-center" scope="row">{{x.thang}}</th>
-			<td class="text-align-center">{{x.tiennuoc}} đ</td>
 			<td class="text-align-center">{{x.tiendien}} đ</td>
+			<td class="text-align-center">{{x.tiennuoc}} đ</td>
 			<td class="text-align-center">{{x.tong}} đ</td>
 			{% if x.trangthai == True %}
 			<td class="text-align-center" style="color: green">đã đóng</td>
@@ -78,4 +78,5 @@
 		</tr>
 	</tbody>
 </table>
-{% endblock %}
+<div><button class="btn btn-primary more-div" onclick="history.back()">quay lại</button>
+	{% endblock %}

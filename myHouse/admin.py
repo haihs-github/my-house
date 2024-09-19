@@ -7,7 +7,7 @@ class PhongAdmin(admin.ModelAdmin):
 	list_display = ("id", "sodienthangtruoc", "sodienthangnay", "sonuocthangtruoc", "sonuocthangnay", "sodien", "sonuoc")
 
 class CongnoAdmin(admin.ModelAdmin):
-	list_display = ("id", "thang", "tiennuoc", "tiendien", "trangthai", "tong", "phong")
+	list_display = ("id", "thang","sodien", "sonuoc", "tiennuoc", "tiendien", "trangthai", "tong", "phong")
 
 
 admin.site.register(Phong, PhongAdmin)

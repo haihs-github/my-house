@@ -74,16 +74,47 @@ def phong(request, id):
 	}
 	return render(request, 'phong.html', context)
 
+def getthangtruoc(thang, nam):
+	thangtruoc = 0
+	namtruoc = 0
+	if thang == "1":
+		thangtruoc = 12
+		namtruoc = int(nam) - 1
+	else:
+		thangtruoc = int(thang) - 1
+		namtruoc = int(nam)
+	return str(thangtruoc) + "/" + str(namtruoc)
+
+def tiendiennuoc(congnothangnay, congnothangtruoc):
+	sodien = congnothangnay.sodien - congnothangtruoc.sodien
+	print(congnothangnay.sodien)
+	print(congnothangtruoc.sodien)
+	print(sodien)
+	sonuoc = congnothangnay.sonuoc - congnothangtruoc.sonuoc
+	congnothangnay.tiennuoc = sonuoc*18000
+	if sodien > 150:
+		congnothangnay.tiendien = (sodien - 150)*3500 + 150*3000
+		print("yes")
+	else:
+		congnothangnay.tiendien = sodien*3000
+	print(congnothangnay.tiendien)
+	congnothangnay.save()
+	return 0
+
 def congnothangchitiet(request, id, thang, nam):
 	phong = Phong.objects.get(id=id)
 	thangnam = thang + "/" + nam
 	congno = Congno.objects.get(phong=phong, thang=thangnam)
-	tongsodien = phong.sodienthangnay - phong.sodienthangtruoc
-	tongsonuoc = phong.sonuocthangnay - phong.sonuocthangtruoc
+	thangtruoc = getthangtruoc(thang, nam)
+	congnothangtruoc = Congno.objects.get(phong=phong, thang=thangtruoc)
+	tongsodien = congno.sodien - congnothangtruoc.sodien
+	tongsonuoc = congno.sonuoc - congnothangtruoc.sonuoc
+	tiendiennuoc(congno, congnothangtruoc)
 	context = {
 		"phong": phong,
 		"thangnam": thangnam,
 		"congno": congno,
+		"congnothangtruoc": congnothangtruoc,
 		"tongsodien": tongsodien,
 		"tongsonuoc": tongsonuoc,
 	}

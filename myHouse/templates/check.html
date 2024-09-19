@@ -58,7 +58,7 @@
 <body>
 	<div class="login-container">
 		<h2>Đăng Nhập</h2>
-		<form action="{% url 'phong' id=phong.id %}" method="POST">
+		<form action="{% url 'phong' id=phong.id id2= %}" method="POST">
 			<div><input type="text" name="name" placeholder="Tên đăng nhập" required></div>
 			<div><input type="password" name="password" placeholder="Mật khẩu" required></div>
 			<button type="submit">Đăng nhập</button>
