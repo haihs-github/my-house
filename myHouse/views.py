@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from .models import Phong, Congno
 from datetime import datetime
+from django.urls import reverse
+from django.http import HttpResponseRedirect
 
 # Create your views here.
 
@@ -31,7 +33,6 @@ def phong(request, id):
 	request.session.flush()
 	phong = Phong.objects.get(id=id)
 	phongs = Phong.objects.all()
-	print(phongs)
 	congnos = Congno.objects.filter(phong=phong).order_by("-id")
 	thangnam = getthangnam()
 	thang = int(datetime.now().month)
@@ -46,33 +47,58 @@ def phong(request, id):
 			nams.append(getnam(x.thang))
 	nams.sort(reverse=True)
 	if request.method == "POST":
-		newnam = request.POST['nam']
-		newcongnos = getcongnobythangnam(congnos, newnam)
-		for x in newcongnos:
-			if x.trangthai == False:
-				tong = tong + x.tong
-		context = {
-			'phong': phong,
-			'phongs': phongs,
-			'congnos': newcongnos,
-			'thangnam': thangnam,
-			'thang': thang,
-			'nam': newnam,
-			'nams': nams,
-			'tong': tong,
-		}
-		return render(request, 'phong.html', context)
+		if "form-time" in request.POST:
+			newnam = request.POST['nam']
+			newcongnos = getcongnobythangnam(congnos, newnam)
+			for x in newcongnos:
+				if x.trangthai == False:
+					tong = tong + x.tong
+			context = {
+				'phong': phong,
+				'phongs': phongs,
+				'congnos': newcongnos,
+				'thangnam': thangnam,
+				'thang': thang,
+				'nam': newnam,
+				'nams': nams,
+				'tong': tong,
+			}
+			return render(request, 'phong.html', context)
+		if "form-trangthai" in request.POST:
+			congnoid = request.POST['congnoid']
+			congno = Congno.objects.get(id=congnoid)
+			if congno.trangthai == True:
+				congno.trangthai = False
+			else:
+				congno.trangthai = True
+			congno.save()
+			context = {
+				'phong': phong,
+				'phongs': phongs,
+				'congnos': congnos,
+				'thangnam': thangnam,
+				'thang': thang,
+				'nam': nam,
+				'nams': nams,
+				'tong': tong,
+			}
+			# return render(request, 'phong.html', context)
+			return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 	context = {
-		'phong': phong,
-		'phongs': phongs,
-		'congnos': congnos,
-		'thangnam': thangnam,
-		'thang': thang,
-		'nam': nam,
-		'nams': nams,
-		'tong': tong,
-	}
+				'phong': phong,
+				'phongs': phongs,
+				'congnos': congnos,
+				'thangnam': thangnam,
+				'thang': thang,
+				'nam': nam,
+				'nams': nams,
+				'tong': tong,
+			}
 	return render(request, 'phong.html', context)
+
+
+		
+
 
 def getthangtruoc(thang, nam):
 	thangtruoc = 0

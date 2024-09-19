@@ -18,7 +18,7 @@
 			{% endif %}
 			{% endfor %}
 		</select>
-		<button type="submit" class="btn btn-primary filter-btn">Lọc</button>
+		<button type="submit" class="btn btn-primary filter-btn" name="form-time">Lọc</button>
 	</form>
 	<span>Xem tiếp của: </span>
 	{% for x in phongs %}
@@ -56,12 +56,17 @@
 				<a href="{{x.thang}}" class="">chi tiết</a>
 			</td>
 			<td class="text-align-center">
-				{% if x.trangthai == False %}
-				<a href="check/{{x.id}}" class=""><i class="fa-regular fa-square-check" style="color: green"></i></a>
-				{% else %}
-				<a href="check/{{x.id}}" class=""><i class="fa-regular fa-rectangle-xmark"
-						style="color: #ff0000;"></i></a>
-				{% endif %}
+				<form action="{% url 'phong' id=phong.id %}" method="post">
+					{% csrf_token %}
+					<input type="hidden" value="{{x.id}}" name="congnoid">
+					<button type="submit" name="form-trangthai">
+						{% if x.trangthai == False %}
+						<i class="fa-regular fa-square-check" style="color: green"></i>
+						{% else %}
+						<i class="fa-regular fa-rectangle-xmark" style="color: #ff0000;"></i>
+						{% endif %}
+					</button>
+				</form>
 			</td>
 		</tr>
 		{% endfor %}
