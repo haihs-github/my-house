@@ -1,5 +1,5 @@
 {% extends 'index.html' %}
-
+{% load humanize %}
 {% block content %}
 <div class="phong_name">Phòng {{phong.id}}</div>
 <div class="phong_name">tháng: {{thangnam}}</div>
@@ -23,21 +23,21 @@
 	<tbody>
 		<tr>
 			<th class="text-align-center" scope="row">Điện</th>
-			<td class="text-align-center">{{congnothangtruoc.sodien}}</td>
-			<td class="text-align-center">{{congno.sodien}}</td>
-			<td class="text-align-center">{{tongsodien}} số</td>
+			<td class="text-align-center">{{congnothangtruoc.sodien|intcomma}}</td>
+			<td class="text-align-center">{{congno.sodien|intcomma}}</td>
+			<td class="text-align-center">{{tongsodien|intcomma}} số</td>
 			<td class="text-align-center"><span>3.000đ(&lt;=150)</span> <br>
 				<span>3.500đ(&gt;150)</span>
 			</td>
-			<td class="text-align-center">{{congno.tiendien}}đ</td>
+			<td class="text-align-center">{{congno.tiendien|intcomma}}đ</td>
 		</tr>
 		<tr>
 			<th class="text-align-center" scope="row">Nước</th>
-			<td class="text-align-center">{{congnothangtruoc.sonuoc}}</td>
-			<td class="text-align-center">{{congno.sonuoc}}</td>
-			<td class="text-align-center">{{tongsonuoc}} khối</td>
+			<td class="text-align-center">{{congnothangtruoc.sonuoc|intcomma}}</td>
+			<td class="text-align-center">{{congno.sonuoc|intcomma}}</td>
+			<td class="text-align-center">{{tongsonuoc|intcomma}} khối</td>
 			<td class="text-align-center">18.000đ</td>
-			<td class="text-align-center">{{congno.tiennuoc}}đ</td>
+			<td class="text-align-center">{{congno.tiennuoc|intcomma}}đ</td>
 		</tr>
 		<tr style="border-top: 2px solid black">
 			<th class="text-align-center" scope="row">Tổng</th>
@@ -45,7 +45,7 @@
 			<td class="text-align-center"></td>
 			<td class="text-align-center"></td>
 			<td class="text-align-center"></td>
-			<td class="text-align-center">{{congno.tong}} đ</td>
+			<td class="text-align-center">{{congno.tong|intcomma}} đ</td>
 			</td>
 		</tr>
 	</tbody>

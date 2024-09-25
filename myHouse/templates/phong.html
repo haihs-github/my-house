@@ -1,4 +1,5 @@
 {% extends 'index.html' %}
+{% load humanize %}
 {% block content %}
 <div class="phong_name">
 	<div class="phong_name">Phòng {{phong.id}}</div>
@@ -37,16 +38,18 @@
 			<th class="text-align-center" scope="col">Tổng</th>
 			<th class="text-align-center" scope="col">Trạng thái</th>
 			<th class="text-align-center" scope="col">Chi tiết</th>
+			{% if checklogin == True %}
 			<th class="text-align-center" scope="col">đánh dấu</th>
+			{% endif %}
 		</tr>
 	</thead>
 	<tbody>
 		{% for x in congnos %}
 		<tr>
 			<th class="text-align-center" scope="row">{{x.thang}}</th>
-			<td class="text-align-center">{{x.tiendien}} đ</td>
-			<td class="text-align-center">{{x.tiennuoc}} đ</td>
-			<td class="text-align-center">{{x.tong}} đ</td>
+			<td class="text-align-center">{{x.tiendien|intcomma}} đ</td>
+			<td class="text-align-center">{{x.tiennuoc|intcomma}} đ</td>
+			<td class="text-align-center">{{x.tong|intcomma}} đ</td>
 			{% if x.trangthai == True %}
 			<td class="text-align-center" style="color: green">đã đóng</td>
 			{% else %}
@@ -55,6 +58,8 @@
 			<td class="text-align-center" style="color: green">
 				<a href="{{x.thang}}" class="">chi tiết</a>
 			</td>
+			{% if checklogin == True %}
+
 			<td class="text-align-center">
 				<form action="{% url 'phong' id=phong.id %}" method="post">
 					{% csrf_token %}
@@ -64,10 +69,12 @@
 						<i class="fa-regular fa-square-check" style="color: green"></i>
 						{% else %}
 						<i class="fa-regular fa-rectangle-xmark" style="color: #ff0000;"></i>
-						{% endif %}
 					</button>
+					{% endif %}
 				</form>
 			</td>
+			{% endif %}
+
 		</tr>
 		{% endfor %}
 		<tr style="border-top: 2px solid black">
@@ -78,8 +85,10 @@
 			<td class="text-align-center" style="color: red"></td>
 			<td class="text-align-center" style="color: green">
 			</td>
+			{% if checklogin == True %}
 			<td class="text-align-center">
 			</td>
+			{% endif %}
 		</tr>
 	</tbody>
 </table>
