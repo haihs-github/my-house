@@ -9,12 +9,22 @@
 				</button>
 				<div class="collapse navbar-collapse" id="navbarNav">
 					<ul class="navbar-nav">
+						{% if checklogin == True %}
 						<li class="nav-item">
 							<a class="nav-link" href="/tinhtien/">Tính tiền điện nước</a>
 						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="/dangxuat">Đăng xuất</a>
+						</li>
+						{% else %}
+						<li class="nav-item"></li>
+						<a class="nav-link" href="/dangxuat">Đăng nhập</a>
+						</li>
+						{% endif %}
 					</ul>
 				</div>
 			</div>
-		</nav>
-	</header>
+</div>
+</nav>
+</header>
 </div>

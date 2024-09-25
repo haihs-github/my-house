@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'myHouse',
     'bootstrap5',
+    'django.contrib.humanize',
 ]
 
 MIDDLEWARE = [

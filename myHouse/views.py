@@ -7,9 +7,14 @@ from django.http import HttpResponseRedirect
 # Create your views here.
 
 def index(request):
-	return redirect('/home')
+	print(request.session.get('login', False))
+	context = {
+		'checklogin': request.session.get('login', False)
+	}
+	return redirect('/check', context)
 
 def home(request):
+	checklogin = request.session.get('login', False)
 	phong1 = Phong.objects.get(id=1)
 	congnosphong1 = Congno.objects.filter(phong=phong1)
 	no1=0
@@ -38,6 +43,7 @@ def home(request):
 		'no1': no1,
 		'no2': no2,
 		'no3': no3,
+		'checklogin': checklogin,
 	}
 	return render(request, 'home.html', context)
 
@@ -57,9 +63,9 @@ def getnam(thang):
 	tmp = thang.split('/')
 	return tmp[1]
 
-
 def phong(request, id):
-	request.session.flush()
+	checklogin = request.session.get('login', False)
+	print("phong",checklogin)
 	phong = Phong.objects.get(id=id)
 	phongs = Phong.objects.all()
 	congnos = Congno.objects.filter(phong=phong).order_by("-id")
@@ -91,9 +97,12 @@ def phong(request, id):
 				'nam': newnam,
 				'nams': nams,
 				'tong': tong,
+				'checklogin': checklogin,
 			}
 			return render(request, 'phong.html', context)
 		if "form-trangthai" in request.POST:
+			if request.session.get('login', False) == False:
+				return redirect('/')
 			congnoid = request.POST['congnoid']
 			congno = Congno.objects.get(id=congnoid)
 			if congno.trangthai == True:
@@ -110,6 +119,7 @@ def phong(request, id):
 				'nam': nam,
 				'nams': nams,
 				'tong': tong,
+				'checklogin': checklogin,
 			}
 			# return render(request, 'phong.html', context)
 			return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
@@ -122,6 +132,7 @@ def phong(request, id):
 				'nam': nam,
 				'nams': nams,
 				'tong': tong,
+				'checklogin': checklogin,
 			}
 	return render(request, 'phong.html', context)
 
@@ -168,10 +179,13 @@ def congnothangchitiet(request, id, thang, nam):
 		"congnothangtruoc": congnothangtruoc,
 		"tongsodien": tongsodien,
 		"tongsonuoc": tongsonuoc,
+		'checklogin': request.session.get('login', False)
 	}
 	return render(request, 'congnothangchitiet.html', context)
 
 def tinhtien(request):
+	if request.session.get('login', False) == False:
+		return redirect('/')
 	thangnay = datetime.now().month
 	namnay = datetime.now().year
 	thang = str(thangnay) + "/" + str(namnay)
@@ -203,10 +217,23 @@ def tinhtien(request):
 		return redirect('home')
 	context = {
 		'thang': thang,
-
+		'checklogin': request.session.get('login', False)
 	}
 	return render(request, 'tinhtien.html', context)
 
-def phongcheck(request, id, id2):
-	
+def check(request):
+	if request.method == "POST":
+		name = request.POST['name']
+		password = request.POST['password']
+		if name == "admin" and password == "admin":
+			request.session['login'] = True
+			return redirect('home')
+		else:
+			request.session['login'] = False
+			request.session.flush()
+			return redirect('home')
 	return render(request, 'check.html')
+
+def dangxuat(request):
+	request.session.flush()
+	return redirect('check')
