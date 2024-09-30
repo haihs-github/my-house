@@ -148,7 +148,7 @@ def getthangtruoc(thang, nam):
 	return str(thangtruoc) + "/" + str(namtruoc)
 
 def tiendiennuoc(congnothangnay, congnothangtruoc):
-	sodien = int(congnothangnay.sodien) - int(congnothangtruoc.sodien)
+	sodien = float(congnothangnay.sodien) - float(congnothangtruoc.sodien)
 	print(congnothangnay.sodien)
 	print(congnothangtruoc.sodien)
 	print(sodien)
