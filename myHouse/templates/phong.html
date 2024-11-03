@@ -2,8 +2,8 @@
 {% load humanize %}
 {% block content %}
 <div class="phong_name">
-	<div class="phong_name">Phòng {{phong.id}}</div>
-	<form action="{% url 'phong' id=phong.id %}" method="post" class="phong_name">
+	<div class="phong_name">Phòng {{phong.stt}}</div>
+	<form method="post" class="phong_name">
 		{% csrf_token %}
 		<label>năm</label>
 		<select name="nam">
@@ -24,7 +24,7 @@
 	<span>Xem tiếp của: </span>
 	{% for x in phongs %}
 	{% if x.id != phong.id %}
-	<a href="/home/congno/phong/{{x.id}}" class="phong_name btn btn-primary">Phòng {{x.id}}</a>
+	<a href="/congno/phong={{x.stt}}/" class="phong_name btn btn-primary">Phòng {{x.stt}}</a>
 	{% endif %}
 	{% endfor %}
 </div>
@@ -35,6 +35,8 @@
 			<th class="text-align-center" scope=" col">Tháng</th>
 			<th class="text-align-center" scope="col">Tiền điện</th>
 			<th class="text-align-center" scope="col">Tiền nước</th>
+			<th class="text-align-center" scope="col">Điện, nước</th>
+			<th class="text-align-center" scope="col">Tiền nhà</th>
 			<th class="text-align-center" scope="col">Tổng</th>
 			<th class="text-align-center" scope="col">Trạng thái</th>
 			<th class="text-align-center" scope="col">Chi tiết</th>
@@ -47,21 +49,23 @@
 		{% for x in congnos %}
 		<tr>
 			<th class="text-align-center" scope="row">{{x.thang}}</th>
-			<td class="text-align-center">{{x.tiendien|intcomma}} đ</td>
-			<td class="text-align-center">{{x.tiennuoc|intcomma}} đ</td>
-			<td class="text-align-center">{{x.tong|intcomma}} đ</td>
+			<td class="text-align-center">{{x.tiendien|floatformat:0|intcomma}} đ</td>
+			<td class="text-align-center">{{x.tiennuoc|floatformat:0|intcomma}} đ</td>
+			<td class="text-align-center">{{x.diennuoc|floatformat:0|intcomma}} đ</td>
+			<td class="text-align-center">{{x.phong.tienphong|floatformat:0|intcomma}} đ</td>
+			<td class="text-align-center">{{x.tong|floatformat:0|intcomma}} đ</td>
 			{% if x.trangthai == True %}
 			<td class="text-align-center" style="color: green">đã đóng</td>
 			{% else %}
 			<td class="text-align-center" style="color: red">chưa đóng</td>
 			{% endif %}
 			<td class="text-align-center" style="color: green">
-				<a href="{{x.thang}}" class="">chi tiết</a>
+				<a href="/congno/phong={{x.phong.stt}}/{{x.thang}}/" class="">chi tiết</a>
 			</td>
 			{% if checklogin == True %}
 
 			<td class="text-align-center">
-				<form action="{% url 'phong' id=phong.id %}" method="post">
+				<form action="{% url 'phong' stt=x.phong.stt %}" method="post">
 					{% csrf_token %}
 					<input type="hidden" value="{{x.id}}" name="congnoid">
 					<button type="submit" name="form-trangthai">
@@ -74,14 +78,19 @@
 				</form>
 			</td>
 			{% endif %}
-
 		</tr>
 		{% endfor %}
 		<tr style="border-top: 2px solid black">
-			<th class="text-align-center" scope="row"></th>
+			<th class="text-align-center" scope="row">Công nợ</th>
 			<td class="text-align-center"></td>
 			<td class="text-align-center"></td>
-			<td class="text-align-center">{{tong|intcomma}} đ</td>
+			<td class="text-align-center"></td>
+			<td class="text-align-center"></td>
+			{% if tong == 0 %}
+			<td class="text-align-center" style="color: green;">{{tong|floatformat:0|intcomma}} đ</td>
+			{% else %}
+			<td class="text-align-center" style="color: red;">{{tong|floatformat:0|intcomma}} đ</td>
+			{% endif %}
 			<td class="text-align-center" style="color: red"></td>
 			<td class="text-align-center" style="color: green">
 			</td>

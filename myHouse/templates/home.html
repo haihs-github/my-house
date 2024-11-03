@@ -1,44 +1,24 @@
 {% extends "index.html" %}
 {% load humanize %}
-
 {% block content %}
+
 <div class="container-fluid container-xxl">
 	<ol class="list-group list-group-numbered">
-		<a href="congno/phong/1" class="list-group-item d-flex justify-content-between align-items-start">
+		{% for x in phongs %}
+		<a href="/congno/phong={{x.stt}}/" class="list-group-item d-flex justify-content-between align-items-start">
 			<div class="ms-2 me-auto">
-				<div class="fw-bold">Phòng 1</div>
-				<span class="">(Phòng đầu tiên đằng trước)</span>
+				<div class="fw-bold">Phòng {{x.stt}}</div>
+				<span class="">({{x.vitri}})</span>
 			</div>
-			{% if no1 == 0 %}
+			{% if x.no == 0 %}
 			<i class="fa-solid fa-circle-check check-icon" style="color: #63E6BE;"></i>
 			{% else %}
-			<span class="check-thieu"> còn thiếu: {{no1|intcomma}}đ </span>
+			<span class="check-thieu"> còn thiếu: {{x.no|intcomma}}đ </span>
 			{% endif %}
 		</a>
-		<a href="congno/phong/2" class="list-group-item d-flex justify-content-between align-items-start">
-			<div class="ms-2 me-auto">
-				<div class="fw-bold">Phòng 2</div>
-				(Phòng tầng 2)
-			</div>
-			{% if no2 == 0 %}
-			<i class="fa-solid fa-circle-check check-icon" style="color: #63E6BE;"></i>
-			{% else %}
-			<span class="check-thieu"> còn thiếu: {{no2|intcomma}}đ</span>
-			{% endif %}
-		</a>
-		<a href="congno/phong/3" class="list-group-item d-flex justify-content-between align-items-start">
-			<div class="ms-2 me-auto">
-				<div class="fw-bold">Phòng 3</div>
-				(2 phòng đằng sau)
-			</div>
-			{% if no3 == 0 %}
-			<i class="fa-solid fa-circle-check check-icon" style="color: #63E6BE;"></i>
-			{% else %}
-			<span class="check-thieu"> còn thiếu: {{no3|intcomma}}đ</span>
-			{% endif %}
-		</a>
+		{% endfor %}
 	</ol>
 </div>
-<p>v1.3</p>
+<p>v2.0</p>
 
 {% endblock %}

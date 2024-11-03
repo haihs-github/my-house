@@ -6,7 +6,7 @@ urlpatterns = [
 	path('check/', views.check, name='check'),
 	path('dangxuat/', views.dangxuat, name='dangxuat'),
 	path('home/', views.home, name='home'),
-	path('home/congno/phong/<int:id>/', views.phong, name='phong'),
-	path('home/congno/phong/<int:id>/<str:thang>/<str:nam>', views.congnothangchitiet , name='congnothangchitiet'),
+	path('congno/phong=<int:stt>/', views.phong, name='phong'),
+	path('congno/phong=<int:stt>/<str:thang>/<str:nam>/', views.congnothangchitiet , name='congnothangchitiet'),
 	path('tinhtien/', views.tinhtien, name='tinhtien'),
 ]

@@ -4,10 +4,10 @@ from .models import Phong, Congno
 
 
 class PhongAdmin(admin.ModelAdmin):
-	list_display = ("id", "sodienthangtruoc", "sodienthangnay", "sonuocthangtruoc", "sonuocthangnay", "sodien", "sonuoc")
+	list_display = ("id", 'stt', 'vitri', "sodienthangtruoc", "sodienthangnay", "sonuocthangtruoc", "sonuocthangnay", "sodien", "sonuoc", 'tienphong', 'no')
 
 class CongnoAdmin(admin.ModelAdmin):
-	list_display = ("id", "thang","sodien", "sonuoc", "tiennuoc", "tiendien", "trangthai", "tong", "phong")
+	list_display = ("id", "thang","sodien", "sonuoc", "tiennuoc", "tiendien", 'tienphong', "trangthai", "tong", "phong")
 
 
 admin.site.register(Phong, PhongAdmin)

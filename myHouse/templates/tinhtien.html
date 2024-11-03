@@ -6,33 +6,28 @@
 	<label class="phong_name">tháng</label>
 	<input type="text" name="thang" value="{{thang}}">
 	<div class="row my-2">
-		<span class="col-2 phong-title">Phòng 1</span>
-		<div class="col-5">
-			<input type="number" class="form-control" placeholder="Số điện" name="sodienp1">
+		<span class="col-2 phong-title"></span>
+		<div class="col-5" style="text-align: center;">
+			<h1>Số điện</h1>
 		</div>
-		<div class="col-5">
-			<input type="number" class="form-control" placeholder="Số nước" name="sonuocp1">
-		</div>
-	</div>
-	<div class="row py-2">
-		<span class="col-2 phong-title">Phòng 2</span>
-		<div class="col-5">
-			<input type="number" class="form-control" placeholder="Số điện" name="sodienp2">
-		</div>
-		<div class="col-5">
-			<input type="number" class="form-control" placeholder="Số nước" name="sonuocp2">
+		<div class="col-5" style="text-align: center;">
+			<h1>Số nước</h1>
 		</div>
 	</div>
-	<div class="row py-2">
-		<span class="col-2 phong-title">Phòng 3</span>
+	{% for x in phongs%}
+	<div class="row my-2">
+		<span class="col-2 phong-title">Phòng {{x.stt}}</span>
 		<div class="col-5">
-			<input type="number" class="form-control" placeholder="Số điện" name="sodienp3">
+			<input type="number" step="any" class="form-control" placeholder="Số điện" name="sodienp{{x.id}}"
+				value="{{x.sodienthangtruoc}}">
 		</div>
 		<div class="col-5">
-			<input type="number" class="form-control" placeholder="Số nước" name="sonuocp3">
+			<input type="number" step="any" class="form-control" placeholder="Số nước" name="sonuocp{{x.id}}"
+				value="{{x.sonuocthangtruoc}}">
 		</div>
 	</div>
-	<button type="submit" class="btn btn-primary filter-btn more-div py-1" name="form-time">Tính toán</button>
+	{% endfor %}
+	<button type="submit" class="btn btn-primary filter-btn more-div py-1" name="form-tinhtien">Tính toán</button>
 </form>
 <a href="/home/"><button class="btn btn-primary more-div my-2">quay lại</button></a>
 {% endblock %}

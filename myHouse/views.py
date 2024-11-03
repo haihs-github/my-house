@@ -15,69 +15,58 @@ def index(request):
 
 def home(request):
 	checklogin = request.session.get('login', False)
-	phong1 = Phong.objects.get(id=1)
-	congnosphong1 = Congno.objects.filter(phong=phong1)
-	no1=0
-	for x in congnosphong1:
-		if x.trangthai == False:
-			no1 += x.tong
-	phong2 = Phong.objects.get(id=2)
-	congnosphong2 = Congno.objects.filter(phong=phong2)
-	no2=0
-	for x in congnosphong2:
-		if x.trangthai == False:
-			no2+=x.tong
-	phong3 = Phong.objects.get(id=3)
-	congnosphong3 = Congno.objects.filter(phong=phong3)
-	no3=0
-	for x in congnosphong3:
-		if x.trangthai == False:
-			no3+=x.tong
+	phongs = Phong.objects.all()
+	for x in phongs:
+		congnos = Congno.objects.filter(phong=x)
+		for i in congnos:
+			if i.trangthai == False:
+				x.no += i.tong
 	context = {
-		'phong1': phong1,
-		'phong2': phong2,
-		'phong3': phong3,
-		'congnosphong1': congnosphong1,
-		'congnosphong2': congnosphong2,
-		'congnosphong3': congnosphong3,
-		'no1': no1,
-		'no2': no2,
-		'no3': no3,
+		'phongs': phongs,
 		'checklogin': checklogin,
 	}
 	return render(request, 'home.html', context)
 
-def getthangnam():
+def getthangnam(): # mm/yyyy
 	thang = datetime.now().month
 	year = datetime.now().year
 	return str(thang) + "/" + str(year)
 
+def getthangtruoc(thang, nam):
+	gformruoc = 0
+	namtruoc = 0
+	if thang == "1":
+		thangtruoc = 12
+		namtruoc = int(nam) - 1
+	else:
+		thangtruoc = int(thang) - 1
+		namtruoc = int(nam)
+	return str(thangtruoc) + "/" + str(namtruoc)
+
+def getnam(thang): # yyyy
+	tmp = thang.split('/')
+	return tmp[1]
+
 def getcongnobythangnam(congnos, date):
-	newcongnos = []
+	newcongnos = list()
 	for x in congnos:
 		if date in x.thang:
 			newcongnos.append(x)
 	return newcongnos
 
-def getnam(thang):
-	tmp = thang.split('/')
-	return tmp[1]
-
-def phong(request, id):
+def phong(request, stt):
 	checklogin = request.session.get('login', False)
-	print("phong",checklogin)
-	phong = Phong.objects.get(id=id)
+	phong = Phong.objects.get(stt=stt)
 	phongs = Phong.objects.all()
 	congnos = Congno.objects.filter(phong=phong).order_by("-id")
-	thangnam = getthangnam()
+	thangnam = getthangnam() #mm/yyyy
 	thang = int(datetime.now().month)
 	nam = int(datetime.now().year)
-	nams = []
+	nams = list()
 	tong = 0
 	for x in congnos:
 		if x.trangthai == False:
-			tong = tong + x.tong
-	for x in congnos:
+			tong += x.tong
 		if getnam(x.thang) not in nams:
 			nams.append(getnam(x.thang))
 	nams.sort(reverse=True)
@@ -136,22 +125,8 @@ def phong(request, id):
 			}
 	return render(request, 'phong.html', context)
 
-def getthangtruoc(thang, nam):
-	thangtruoc = 0
-	namtruoc = 0
-	if thang == "1":
-		thangtruoc = 12
-		namtruoc = int(nam) - 1
-	else:
-		thangtruoc = int(thang) - 1
-		namtruoc = int(nam)
-	return str(thangtruoc) + "/" + str(namtruoc)
-
 def tiendiennuoc(congnothangnay, congnothangtruoc):
-	sodien = float(congnothangnay.sodien) - float(congnothangtruoc.sodien)
-	print(congnothangnay.sodien)
-	print(congnothangtruoc.sodien)
-	print(sodien)
+	sodien = congnothangnay.sodien - congnothangtruoc.sodien
 	sonuoc = congnothangnay.sonuoc - congnothangtruoc.sonuoc
 	congnothangnay.tiennuoc = sonuoc*18000
 	if sodien > 150:
@@ -163,12 +138,26 @@ def tiendiennuoc(congnothangnay, congnothangtruoc):
 	congnothangnay.save()
 	return 0
 
-def congnothangchitiet(request, id, thang, nam):
-	phong = Phong.objects.get(id=id)
+def congnothangchitiet(request, stt, thang, nam):
+	phong = Phong.objects.get(stt=stt)
 	thangnam = thang + "/" + nam
 	congno = Congno.objects.get(phong=phong, thang=thangnam)
 	thangtruoc = getthangtruoc(thang, nam)
-	congnothangtruoc = Congno.objects.get(phong=phong, thang=thangtruoc)
+	congnothangtruoc = Congno()
+	try:
+		congnothangtruoc = Congno.objects.get(phong=phong, thang=thangtruoc)
+		print('co thang truoc:', congnothangtruoc.thang)
+	except:
+		try:
+			for x in Congno.objects.filter(phong=phong).order_by('-id'):
+				if datetime.strptime(x.thang, '%m/%Y') < datetime.strptime(thangnam, '%m/%Y'):
+					congnothangtruoc = x
+					print('thang gan nhat la:', congnothangtruoc)
+					break
+		except:
+			congnothangtruoc = Congno(thang=thangtruoc, tienphong= phong.tienphong, sodien=0, sonuoc=0, tiennuoc=0, tiendien=0, trangthai=True, phong=phong)
+			# congnothangtruoc = Congno.objects.get(phong=phong, thang=thangnam)
+			print('ko co thang truoc:', congnothangtruoc)
 	tongsodien = congno.sodien - congnothangtruoc.sodien
 	tongsonuoc = congno.sonuoc - congnothangtruoc.sonuoc
 	tiendiennuoc(congno, congnothangtruoc)
@@ -186,38 +175,41 @@ def congnothangchitiet(request, id, thang, nam):
 def tinhtien(request):
 	if request.session.get('login', False) == False:
 		return redirect('/')
-	thangnay = datetime.now().month
-	namnay = datetime.now().year
-	thang = str(thangnay) + "/" + str(namnay)
+	thang = getthangnam()
+	phongs = list(Phong.objects.all().order_by('stt'))
 	if request.method == "POST":
 		thangform = request.POST['thang']
-		sodienp1 = int(request.POST['sodienp1'])
-		sonuocp1 = int(request.POST['sonuocp1'])
-		phong1 = Phong.objects.get(id=1)
-		congno1 = Congno(thang=thangform, sodien=sodienp1, sonuoc=sonuocp1, tiennuoc=0, tiendien=0, trangthai=False, phong=phong1)
-		congno1.save()
-		congno1thangtruoc = Congno.objects.get(phong=phong1, thang=getthangtruoc(thangnay, namnay))
-		tiendiennuoc(congno1, congno1thangtruoc)
-
-		sodienp2 = int(request.POST['sodienp2'])
-		sonuocp2 = int(request.POST['sonuocp2'])
-		phong2 = Phong.objects.get(id=2)
-		congno2 = Congno(thang=thangform, sodien=sodienp2, sonuoc=sonuocp2, tiennuoc=0, tiendien=0, trangthai=False, phong=phong2)
-		congno2.save()
-		congno2thangtruoc = Congno.objects.get(phong=phong2, thang=getthangtruoc(thangnay, namnay))
-		tiendiennuoc(congno2, congno2thangtruoc)
-
-		sodienp3 = int(request.POST['sodienp3'])
-		sonuocp3 = int(request.POST['sonuocp3'])
-		phong3 = Phong.objects.get(id=3)
-		congno3 = Congno(thang=thangform, sodien=sodienp3, sonuoc=sonuocp3, tiennuoc=0, tiendien=0, trangthai=False, phong=phong3)
-		congno3.save()
-		congno3thangtruoc = Congno.objects.get(phong=phong3, thang=getthangtruoc(thangnay, namnay))
-		tiendiennuoc(congno3, congno3thangtruoc)
+		tmp = thangform.split('/')
+		thangnay = tmp[0]
+		namnay = tmp[1]
+		for x in phongs:
+			Congno()
+			sodien = float(request.POST[f'sodienp{x.id}'])
+			sonuoc = float(request.POST[f'sonuocp{x.id}'])
+			congno = Congno(thang=thangform, sodien=sodien, sonuoc=sonuoc, trangthai=False, phong=x)
+			congnothangtruoc = Congno()
+			try:
+				congnothangtruoc = Congno.objects.get(phong=x, thang=thangform)
+				print('co thang truoc:', congnothangtruoc.thang)
+			except:
+				try:
+					for i in Congno.objects.filter(phong=x).order_by('-id'):
+						if datetime.strptime(i.thang, '%m/%Y') < datetime.strptime(thangform, '%m/%Y'):
+							congnothangtruoc = i
+							print('thang gan nhat la:', congnothangtruoc)
+							break
+				except:
+					congnothangtruoc = Congno(thang=getthangtruoc(thangnay, namnay), tienphong= x.tienphong, sodien=0, sonuoc=0, tiennuoc=0, tiendien=0, trangthai=True, phong=x)
+			print('congnothangtruoc.sodien:',congnothangtruoc.sodien)
+			print('congnothangnay.sodien:',congno.sodien)
+			tiendiennuoc(congno, congnothangtruoc)
+			x.sodienthangtruoc = x.sodienthangnay
+			x.sonuocthangtruoc = x.sonuocthangnay
 		return redirect('home')
 	context = {
 		'thang': thang,
-		'checklogin': request.session.get('login', False)
+		'checklogin': request.session.get('login', False),
+		'phongs': phongs,
 	}
 	return render(request, 'tinhtien.html', context)
 
