@@ -14,7 +14,7 @@
 			<h1>Số nước</h1>
 		</div>
 	</div>
-	{% for x in phongs%}
+	{% for x in phongs %}
 	<div class="row my-2">
 		<span class="col-2 phong-title">Phòng {{x.stt}}</span>
 		<div class="col-5">
@@ -22,8 +22,13 @@
 				value="{{x.sodienthangtruoc}}">
 		</div>
 		<div class="col-5">
+			{% if x.stt == 4 %}
+			<input type="number" step="any" class="form-control" placeholder="Số nước" name="sonuocp{{x.id}}" hidden
+				value="{{x.sonuocthangtruoc}}">
+			{% else %}
 			<input type="number" step="any" class="form-control" placeholder="Số nước" name="sonuocp{{x.id}}"
 				value="{{x.sonuocthangtruoc}}">
+			{% endif %}
 		</div>
 	</div>
 	{% endfor %}

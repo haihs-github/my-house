@@ -128,6 +128,8 @@ def phong(request, stt):
 def tiendiennuoc(congnothangnay, congnothangtruoc):
 	sodien = congnothangnay.sodien - congnothangtruoc.sodien
 	sonuoc = congnothangnay.sonuoc - congnothangtruoc.sonuoc
+	if congnothangnay.phong.stt == 3 or congnothangnay.phong.stt == 4:
+		sonuoc = sonuoc / 2
 	congnothangnay.tiennuoc = sonuoc*18000
 	if sodien > 150:
 		congnothangnay.tiendien = (sodien - 150)*3500 + 150*3000
@@ -160,6 +162,8 @@ def congnothangchitiet(request, stt, thang, nam):
 			print('ko co thang truoc:', congnothangtruoc)
 	tongsodien = congno.sodien - congnothangtruoc.sodien
 	tongsonuoc = congno.sonuoc - congnothangtruoc.sonuoc
+	if phong.stt == 3 or phong.stt ==4:
+		tongsonuoc /= 2
 	tiendiennuoc(congno, congnothangtruoc)
 	context = {
 		"phong": phong,
@@ -185,7 +189,11 @@ def tinhtien(request):
 		for x in phongs:
 			Congno()
 			sodien = float(request.POST[f'sodienp{x.id}'])
-			sonuoc = float(request.POST[f'sonuocp{x.id}'])
+			if x.stt == 4:
+				sonuoc = float(request.POST[f'sonuocp{Phong.objects.get(stt=3).id}'])
+			else:
+				sonuoc = float(request.POST[f'sonuocp{x.id}'])
+			print('sonuoc thang: ', thangform, 'cua phong:', x.stt, 'la:', sonuoc)
 			congno = Congno(thang=thangform, sodien=sodien, sonuoc=sonuoc, trangthai=False, phong=x)
 			congnothangtruoc = Congno()
 			try:
