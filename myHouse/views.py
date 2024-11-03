@@ -203,8 +203,10 @@ def tinhtien(request):
 			print('congnothangtruoc.sodien:',congnothangtruoc.sodien)
 			print('congnothangnay.sodien:',congno.sodien)
 			tiendiennuoc(congno, congnothangtruoc)
-			x.sodienthangtruoc = x.sodienthangnay
-			x.sonuocthangtruoc = x.sonuocthangnay
+			x.sodienthangtruoc = congno.sodien
+			x.sonuocthangtruoc = congno.sonuoc
+			x.save()
+			print('debug: ', x.sodienthangtruoc, x.sonuocthangtruoc)
 		return redirect('home')
 	context = {
 		'thang': thang,

@@ -13,7 +13,7 @@
 			{% if x.no == 0 %}
 			<i class="fa-solid fa-circle-check check-icon" style="color: #63E6BE;"></i>
 			{% else %}
-			<span class="check-thieu"> còn thiếu: {{x.no|intcomma}}đ </span>
+			<span class="check-thieu"> còn thiếu: {{x.no|floatformat:0|intcomma}}đ </span>
 			{% endif %}
 		</a>
 		{% endfor %}
